@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class UploadBannerScreen extends StatelessWidget {
-  static const String id = '\banner-screen';
+  static const String id = 'banner-screen';
   const UploadBannerScreen({super.key});
 
   @override

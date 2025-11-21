@@ -1,6 +1,8 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
+import '../../controllers/category_controller.dart';
+
 class CategoryScreen extends StatefulWidget {
   static const String id = 'category-screen';
   const CategoryScreen({super.key});
@@ -11,7 +13,8 @@ class CategoryScreen extends StatefulWidget {
 
 class _CategoryScreenState extends State<CategoryScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  late String categoryName;
+  final CategoryController _categoryController = CategoryController();
+  late String name;
 
   dynamic _image;
   dynamic _bannerImage;
@@ -99,7 +102,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                     width: 150,
                     child: TextFormField(
                       onChanged: (value) {
-                        categoryName = value;
+                        name = value;
                       },
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -117,9 +120,14 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 TextButton(onPressed: () {}, child: Text('Cancel')),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
-                  onPressed: () {
+                  onPressed: () async {
                     if (_formKey.currentState!.validate()) {
-                      // Process data.
+                      await _categoryController.uploadCategory(
+                        pickedImage: _image,
+                        pickedBanner: _bannerImage,
+                        name: name,
+                        context: context,
+                      );
                     }
                   },
                   child: Text('Save', style: TextStyle(color: Colors.white)),
