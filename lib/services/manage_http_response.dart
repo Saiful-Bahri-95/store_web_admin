@@ -30,10 +30,10 @@ void showSnackbar(BuildContext context, String title) {
     SnackBar(
       content: Text(
         title,
-        style: TextStyle(color: const Color.fromARGB(255, 14, 76, 114)),
+        style: TextStyle(color: const Color.fromARGB(255, 255, 255, 255)),
         textAlign: TextAlign.center,
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: const Color.fromARGB(255, 10, 107, 234),
     ),
   );
 }

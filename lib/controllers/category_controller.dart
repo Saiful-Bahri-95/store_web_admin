@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:app_web/global_variable.dart';
 import 'package:app_web/models/category.dart';
 import 'package:app_web/services/manage_http_response.dart';
@@ -12,9 +14,9 @@ class CategoryController {
     required context,
   }) async {
     try {
-      final cludinary = CloudinaryPublic("dgbyvtftl", 'qhxsafcv');
+      final cloudinary = CloudinaryPublic("dgbyvtftl", 'qhxsafcv');
       //upload image
-      CloudinaryResponse imageResponse = await cludinary.uploadFile(
+      CloudinaryResponse imageResponse = await cloudinary.uploadFile(
         CloudinaryFile.fromBytesData(
           pickedImage,
           identifier: 'pickedImage',
@@ -24,7 +26,7 @@ class CategoryController {
       String image = imageResponse.secureUrl;
 
       //upload banner
-      CloudinaryResponse bannerResponse = await cludinary.uploadFile(
+      CloudinaryResponse bannerResponse = await cloudinary.uploadFile(
         CloudinaryFile.fromBytesData(
           pickedBanner,
           identifier: 'pickedBanner',
@@ -56,7 +58,31 @@ class CategoryController {
         },
       );
     } catch (e) {
-      print('Error uploading to Cloudinary: $e');
+      throw Exception('Error uploading to Cloudinary: $e');
+    }
+  }
+
+  //load uploaded categories
+  Future<List<Category>> loadCategories() async {
+    try {
+      //send http request
+      http.Response response = await http.get(
+        Uri.parse('$uri/api/category'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      );
+      if (response.statusCode == 200) {
+        List<dynamic> data = jsonDecode(response.body);
+        List<Category> categories = data
+            .map((category) => Category.fromJson(category))
+            .toList();
+        return categories;
+      } else {
+        throw Exception('Failed to load categories');
+      }
+    } catch (e) {
+      throw Exception('Failed to load categories: $e');
     }
   }
 }
