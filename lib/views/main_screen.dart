@@ -23,78 +23,93 @@ class _MainScreenState extends State<MainScreen> {
   screenSelector(item) {
     switch (item.route) {
       case BuyersScreen.id:
-        setState(() {
-          _selectedScreen = BuyersScreen();
-        });
+        setState(() => _selectedScreen = BuyersScreen());
         break;
       case VendorsScreen.id:
-        setState(() {
-          _selectedScreen = VendorsScreen();
-        });
+        setState(() => _selectedScreen = VendorsScreen());
         break;
       case OrdersScreen.id:
-        setState(() {
-          _selectedScreen = OrdersScreen();
-        });
+        setState(() => _selectedScreen = OrdersScreen());
         break;
       case CategoryScreen.id:
-        setState(() {
-          _selectedScreen = CategoryScreen();
-        });
+        setState(() => _selectedScreen = CategoryScreen());
         break;
       case SubcategoryScreen.id:
-        setState(() {
-          _selectedScreen = SubcategoryScreen();
-        });
+        setState(() => _selectedScreen = SubcategoryScreen());
         break;
       case UploadBannerScreen.id:
-        setState(() {
-          _selectedScreen = UploadBannerScreen();
-        });
+        setState(() => _selectedScreen = UploadBannerScreen());
         break;
       case ProductsScreen.id:
-        setState(() {
-          _selectedScreen = ProductsScreen();
-        });
+        setState(() => _selectedScreen = ProductsScreen());
         break;
-      default:
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return AdminScaffold(
+      backgroundColor: const Color(0xFFF5F7FA),
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 33, 149, 243),
-        title: Text('Managment'),
+        backgroundColor: const Color.fromARGB(255, 107, 245, 245),
+        elevation: 0,
+        title: const Text(
+          'Admin Management',
+          style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1.2),
+        ),
       ),
-      body: _selectedScreen,
-      sideBar: SideBar(
-        header: Container(
-          height: 50,
-          width: double.infinity,
-          decoration: BoxDecoration(
-            color: Colors.black,
-            borderRadius: BorderRadius.circular(12),
+
+      body: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 300),
+        child: Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: MediaQuery.of(context).size.width < 900 ? 12 : 25,
+            vertical: 12,
           ),
-          child: Center(
-            child: Text(
-              'Multi Vendor Admin',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 1.7,
-                color: Colors.white,
+          child: _selectedScreen,
+        ),
+      ),
+
+      sideBar: SideBar(
+        backgroundColor: Colors.white,
+        borderColor: Colors.grey.shade300,
+        textStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+        activeTextStyle: const TextStyle(
+          fontWeight: FontWeight.bold,
+          color: Colors.blue,
+        ),
+
+        header: Container(
+          padding: const EdgeInsets.all(14),
+          decoration: BoxDecoration(color: const Color.fromARGB(255, 0, 0, 0)),
+          child: Row(
+            children: [
+              CircleAvatar(
+                radius: 20,
+                backgroundColor: Colors.grey.shade300,
+                child: const Icon(
+                  Icons.admin_panel_settings,
+                  color: Colors.black,
+                ),
               ),
-            ),
+              const SizedBox(width: 12),
+              const Text(
+                'Admin Panel',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 17,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
           ),
         ),
-        backgroundColor: const Color.fromARGB(255, 93, 214, 231),
+
         items: [
           AdminMenuItem(
             title: 'Vendors',
             route: VendorsScreen.id,
-            icon: CupertinoIcons.person_3,
+            icon: Icons.store_mall_directory,
           ),
           AdminMenuItem(
             title: 'Buyers',
@@ -104,33 +119,32 @@ class _MainScreenState extends State<MainScreen> {
           AdminMenuItem(
             title: 'Orders',
             route: OrdersScreen.id,
-            icon: CupertinoIcons.shopping_cart,
+            icon: CupertinoIcons.cart_fill,
           ),
           AdminMenuItem(
             title: 'Categories',
             route: CategoryScreen.id,
-            icon: Icons.category,
+            icon: Icons.category_rounded,
           ),
           AdminMenuItem(
             title: 'Subcategories',
             route: SubcategoryScreen.id,
-            icon: Icons.category_outlined,
+            icon: Icons.device_hub_outlined,
           ),
           AdminMenuItem(
             title: 'Upload Banner',
             route: UploadBannerScreen.id,
-            icon: Icons.upload,
+            icon: Icons.image_outlined,
           ),
           AdminMenuItem(
             title: 'Products',
             route: ProductsScreen.id,
-            icon: Icons.store,
+            icon: Icons.inventory_2_outlined,
           ),
         ],
+
         selectedRoute: UploadBannerScreen.id,
-        onSelected: (item) {
-          screenSelector(item);
-        },
+        onSelected: (item) => screenSelector(item),
       ),
     );
   }
