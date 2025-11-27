@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:app_web/global_variable.dart';
 import 'package:app_web/services/manage_http_response.dart';
 import 'package:cloudinary_public/cloudinary_public.dart';
@@ -50,6 +52,29 @@ class SubcategoryController {
       );
     } catch (e) {
       throw Exception('Failed to upload subcategory: $e');
+    }
+  }
+
+  Future<List<Subcategory>> loadSubCategories() async {
+    try {
+      //send http request
+      http.Response response = await http.get(
+        Uri.parse('$uri/api/subcategories'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      );
+      if (response.statusCode == 200) {
+        List<dynamic> data = jsonDecode(response.body);
+        List<Subcategory> subcategories = data
+            .map((subcategory) => Subcategory.fromJson(subcategory))
+            .toList();
+        return subcategories;
+      } else {
+        throw Exception('Failed to load Subcategories');
+      }
+    } catch (e) {
+      throw Exception('Failed to load Subcategories: $e');
     }
   }
 }
